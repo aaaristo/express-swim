@@ -61,7 +61,7 @@ $ curl http://127.0.0.1:8001/swim/nodes
 
 ## piggybacking
 
-SWIM uses a piggybacking of failure detection messages to disseminate
+SWIM uses piggybacking of failure detection messages to disseminate
 group membership info accross the cluster. And you can use the same 
 strategy to propagate your app data:
 
