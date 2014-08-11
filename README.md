@@ -51,3 +51,10 @@ $ curl -X POST -d '127.0.0.1:8001' http://127.0.0.1:8002/swim/join
 $ curl -X POST -d '127.0.0.1:8001' http://127.0.0.1:8003/swim/join
 ```
 
+Ok, now you have a connected cluster... Lets break it!
+Try to CTRL-C some node, and see what the other nodes are doing. 
+At any time you can ask for the list of active nodes to any node
+
+```sh
+$ curl http://127.0.0.1:8001/swim/nodes
+```
