@@ -2,3 +2,51 @@ express-swim
 ============
 
 An http-based SWIM gossip protocol implementation, for expressjs apps
+
+http://www.cs.cornell.edu/~asdas/research/dsn02-swim.pdf
+http://www.cs.ucsb.edu/~ravenben/classes/papers/aodv-wmcsa99.pdf
+
+
+## Getting started
+
+Install via npm
+
+```sh
+$ npm install express-swim
+```
+
+Create your app.js
+
+```javascript
+var argv= require('optimist'),
+    express= require('express'),
+    swim= require('swim');
+
+var app= express();
+
+app.use(swim([argv.host,argv.port].join(':')));
+
+app.listen(argv.host,argv.port);
+```
+
+In different terminals launch a bunch of nodes:
+
+```sh
+$ node app.js --host 127.0.0.1 --port 8001
+```
+
+```sh
+$ node app.js --host 127.0.0.1 --port 8002
+```
+
+```sh
+$ node app.js --host 127.0.0.1 --port 8003
+```
+
+and let them join the cluster:
+
+```sh
+$ curl -X POST -d '127.0.0.1:8000' http://127.0.0.1:8002/swim/join
+$ curl -X POST -d '127.0.0.1:8000' http://127.0.0.1:8003/swim/join
+```
+
