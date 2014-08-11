@@ -63,7 +63,7 @@ $ curl http://127.0.0.1:8001/swim/nodes
 
 SWIM uses piggybacking of failure detection messages to disseminate
 group membership info accross the cluster. And you can use the same 
-strategy to propagate your app data:
+strategy to propagate your app messages:
 
 
 ```javascript
