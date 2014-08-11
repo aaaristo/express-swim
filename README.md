@@ -47,7 +47,7 @@ $ node app.js --host 127.0.0.1 --port 8003
 and let them join the cluster:
 
 ```sh
-$ curl -X POST -d '127.0.0.1:8000' http://127.0.0.1:8002/swim/join
-$ curl -X POST -d '127.0.0.1:8000' http://127.0.0.1:8003/swim/join
+$ curl -X POST -d '127.0.0.1:8001' http://127.0.0.1:8002/swim/join
+$ curl -X POST -d '127.0.0.1:8001' http://127.0.0.1:8003/swim/join
 ```
 
