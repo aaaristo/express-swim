@@ -12,15 +12,15 @@ http://www.cs.ucsb.edu/~ravenben/classes/papers/aodv-wmcsa99.pdf
 Install via npm
 
 ```sh
-$ npm install express-swim
+$ npm install optimist express express-swim
 ```
 
 Create your app.js
 
 ```javascript
-var argv= require('optimist'),
+var argv= require('optimist').argv,
     express= require('express'),
-    swim= require('swim');
+    swim= require('express-swim');
 
 var app= express(), node= [argv.host,argv.port].join(':');
 
