@@ -24,7 +24,7 @@ var argv= require('optimist').argv,
 
 var app= express(), node= [argv.host,argv.port].join(':');
 
-app.use(swim(node));
+app.use('/swim',swim(node));
 
 app.listen(argv.port,argv.host);
 console.log(node+' listening...');
