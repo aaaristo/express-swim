@@ -249,7 +249,12 @@ module.exports= function (localNode,opts)
             suspect: function (subject,inc)
             {
                 if (localNode==subject)
+                {
+                    if (incSeq<inc) incSeq= inc; // if a node rejoin a cluster the members may have an higher inc
+                                                 // for this node
+
                     sendMessage('alive',localNode);
+                }
                 else
                 {
                     var server= group.find(subject);
