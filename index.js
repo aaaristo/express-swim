@@ -209,6 +209,7 @@ module.exports= function (localNode,opts)
             join: function (subject,inc)
             {
                 group.join({ string: subject, inc: inc });
+                sendMessage('alive',localNode);
             },
             leave: function (subject,inc)
             {
@@ -219,13 +220,18 @@ module.exports= function (localNode,opts)
             {
                 var server= group.find(subject);
 
-                if (server&&inc>server.inc)
+                if (server)
                 {
-                  server.inc= inc;
-                  server.suspected= clearTimeout(server.suspected);
+                    if (inc>server.inc)
+                    {
+                      server.inc= inc;
+                      server.suspected= clearTimeout(server.suspected);
+                    }
+                    else
+                      group.alive(subject);
                 }
                 else
-                  group.alive(subject);
+                  group.join({ string: subject, inc: inc });
             },
             fail: function (subject,inc) // (confirm)
             {
