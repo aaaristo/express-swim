@@ -22,11 +22,12 @@ var argv= require('optimist'),
     express= require('express'),
     swim= require('swim');
 
-var app= express();
+var app= express(), node= [argv.host,argv.port].join(':');
 
-app.use(swim([argv.host,argv.port].join(':')));
+app.use(swim(node));
 
 app.listen(argv.host,argv.port);
+console.log(node+' listening...');
 ```
 
 In different terminals launch a bunch of nodes:
