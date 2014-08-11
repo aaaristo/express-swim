@@ -58,3 +58,37 @@ At any time you can ask for the list of active nodes to any node
 ```sh
 $ curl http://127.0.0.1:8001/swim/nodes
 ```
+
+## piggybacking
+
+SWIM uses a piggybacking of failure detection messages to disseminate
+group membership info accross the cluster. And you can use the same 
+strategy to propagate your app data:
+
+
+```javascript
+var argv= require('optimist').argv,
+    express= require('express'),
+    swim= require('express-swim');
+
+var app= express(), node= [argv.host,argv.port].join(':');
+
+var swimApp= swim(node);
+
+app.use('/swim',swimApp);
+
+app.listen(argv.port,argv.host);
+console.log(node+' listening...');
+
+swimApp.swim.on('hello',function (world)
+{
+    console.log(world);
+});
+
+setInterval(function ()
+{
+    swimApp.swim.send('hello',{ world: node });
+},5000);
+```
+
+

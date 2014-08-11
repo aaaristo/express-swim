@@ -91,7 +91,14 @@ module.exports= function (localNode,opts)
                                 && upd.counter<max;
                         });
 
-           messages= _.sortBy(messages,'counter').slice(0,MAX_MESSAGES);
+           messages= _.sortBy(messages,function (u) // give precedence to cluster messages
+                                       { 
+                                           if (u.message.content.emit)
+                                             return u.counter+max;
+                                           else
+                                             return u.counter;
+                                       })
+                      .slice(0,MAX_MESSAGES);
 
            messages.forEach(function (upd)
            {
@@ -124,17 +131,17 @@ module.exports= function (localNode,opts)
 
               console.log('swim','receive',message);
 
-              if (message.emit!==undefined)
+              if (message.content.emit!==undefined)
                 try
                 {
-                    swim.emit(message.type,message.emit);
+                    swim.emit(message.content.type,message.content.emit);
                 }
                 catch (ex)
                 {
                    console.log('swim','emit error',ex,ex.stack);
                 }
               else 
-                receive[message.type](message.subject,message.inc);
+                receive[message.content.type](message.content.subject,message.content.inc);
 
               membershipUpdates.unshift({ message: message, counter: 0 });
            });
@@ -189,7 +196,7 @@ module.exports= function (localNode,opts)
         },
         enqueueMessage= function (m)
         {
-               var upd={ message: m, counter: 0 };
+               var upd={ message: { source: localNode, id: messageSeq++, content: m }, counter: 0 };
 
                membershipUpdates.unshift(upd);
 
@@ -201,9 +208,8 @@ module.exports= function (localNode,opts)
 
                if (subject!=localNode&&!server) return;
 
-               enqueueMessage({ source: localNode, id: messageSeq++,
-                                  type: type, subject: subject,
-                                  inc: subject==localNode ? incSeq++ : server.inc });
+               enqueueMessage({ type: type, subject: subject,
+                                 inc: subject==localNode ? incSeq++ : server.inc });
         },
         receive= {
             join: function (subject,inc)
