@@ -1,6 +1,6 @@
 {
   "name": "express-swim",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "An http-based SWIM gossip protocol implementation, for expressjs apps",
   "main": "index.js",
   "scripts": {

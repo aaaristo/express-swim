@@ -59,6 +59,41 @@ At any time you can ask for the list of active nodes to any node
 $ curl http://127.0.0.1:8001/swim/nodes
 ```
 
+You can subscribe membership updates like this:
+
+```javascript
+var argv= require('optimist').argv,
+    express= require('express'),
+    swim= require('express-swim');
+
+var app= express(), node= [argv.host,argv.port].join(':');
+
+var swimApp= swim(node,{ verbose: true });
+
+app.use('/swim',swimApp);
+
+app.listen(argv.port,argv.host);
+console.log(node+' listening...');
+
+swimApp.swim.on('join',function (server)
+{
+    console.log(server,'joined');
+});
+
+swimApp.swim.on('leave',function (server)
+{
+    console.log(server,'leaved');
+});
+
+swimApp.swim.on('fail',function (server)
+{
+    console.log(server,'failed');
+});
+
+```
+
+NOTE: you could receive those message more than one time (per event).
+
 ## piggybacking
 
 SWIM uses piggybacking of failure detection messages to disseminate
