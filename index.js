@@ -145,6 +145,8 @@ module.exports= function (localNode,opts)
 
               membershipUpdates.unshift({ message: message, counter: 0 });
            });
+
+           return ack;
         },
         rnodes= function (n,suspect)
         {
