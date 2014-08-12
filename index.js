@@ -12,6 +12,7 @@ var _= require('underscore'),
 module.exports= function (localNode,opts)
 {
     opts= _.defaults(opts || {},{ base: '/swim', 
+                                  verbose: false,
                                   period_length: 3000,
                                   ping_timeout: 1000,
                                   failing_timeout: 9000,
@@ -129,7 +130,7 @@ module.exports= function (localNode,opts)
                                           &&upd.message.id==message.id }).length)
                 return; // ignore known messages
 
-              console.log('swim','receive',message);
+              if (opts.verbose) console.log('swim','receive',message);
 
               if (message.content.emit!==undefined)
                 try
@@ -202,7 +203,7 @@ module.exports= function (localNode,opts)
 
                membershipUpdates.unshift(upd);
 
-               console.log('swim','send',upd.message);
+               if (opts.verbose) console.log('swim','send',upd.message);
         },
         sendMessage= function (type,subject)
         {
@@ -295,7 +296,7 @@ module.exports= function (localNode,opts)
            if (!Mj)
              Mj= (pingStack= _.shuffle(_.without(group.nodes(),localNode))).pop();
 
-           console.log('swim','period',periodSeq,Mj);
+           if (opts.verbose) console.log('swim','period',periodSeq,Mj);
 
            if (!Mj) return; // disabled we need more nodes on the cluster
 
@@ -326,7 +327,7 @@ module.exports= function (localNode,opts)
                  }); 
               }
               else
-                 console.log('swim','ping','OK',Mj,ack);
+                 if (opts.verbose) console.log('swim','ping','OK',Mj,ack);
            });
         },T1);
 

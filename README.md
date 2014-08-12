@@ -24,7 +24,7 @@ var argv= require('optimist').argv,
 
 var app= express(), node= [argv.host,argv.port].join(':');
 
-app.use('/swim',swim(node));
+app.use('/swim',swim(node,{ verbose: true }));
 
 app.listen(argv.port,argv.host);
 console.log(node+' listening...');
@@ -73,7 +73,7 @@ var argv= require('optimist').argv,
 
 var app= express(), node= [argv.host,argv.port].join(':');
 
-var swimApp= swim(node);
+var swimApp= swim(node,{ verbose: true });
 
 app.use('/swim',swimApp);
 
