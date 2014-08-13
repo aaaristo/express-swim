@@ -43,6 +43,11 @@ module.exports= function (localNode,opts)
         messageSeq= 0,
         membershipUpdates= [],
         servers= (function(servers){ servers[localNode]= { string: localNode, inc: 0 }; return servers; })({}),
+        join= function (node)
+        {
+            group.join({ string: node, inc: 0 });
+            sendMessage('join',localNode);
+        },
         group= {
            join: function (server)
            {
@@ -357,8 +362,7 @@ module.exports= function (localNode,opts)
     // call on the joining node
     app.post('/join', mw.text, function (req, res)
     {
-        group.join({ string: req.text, inc: 0 });
-        sendMessage('join',localNode);
+        join(req.text);
         res.end();
     });
 
@@ -379,6 +383,8 @@ module.exports= function (localNode,opts)
        enqueueMessage({ type: event, emit: message });
        swim.emit(event,message);
     };
+
+    swim.join= join;
 
     app.swim= swim;
 
