@@ -227,7 +227,9 @@ module.exports= function (localNode,opts)
             },
             leave: function (subject,inc)
             {
-                if (inc>=ring.inc(subject));
+                var server= group.find(subject);
+
+                if (inc>=server.inc);
                   group.leave(subject);
             },
             alive: function (subject,inc)
